@@ -3,9 +3,7 @@
 import keras
 
 from resnet_101 import resnet101_model
-from keras.preprocessing.image import ImageDataGenerator
-from keras.callbacks import CSVLogger, ModelCheckpoint, EarlyStopping
-from keras.callbacks import ReduceLROnPlateau
+
 
 # parameters
 img_width, img_height = 224, 224
