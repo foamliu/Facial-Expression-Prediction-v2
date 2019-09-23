@@ -1,3 +1,4 @@
+import math
 import pickle
 
 import cv2 as cv
@@ -5,7 +6,7 @@ import numpy as np
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
-import math
+
 from align_faces import get_reference_facial_points, warp_and_crop_face
 from config import device, im_size
 from mtcnn.detector import detect_faces
@@ -83,23 +84,10 @@ def get_central_face_attributes(full_path):
     return False, None, None
 
 
-def get_image(filename):
-    has_face, bboxes, landmarks = get_central_face_attributes(filename)
-    if not has_face:
-        raise FaceNotFoundError(filename)
-
-    img = align_face(filename, landmarks)
-    img = transforms.ToPILImage()(img)
-    img = transformer(img)
-    img = img.to(device)
-
-    print('drawing bboxes: {}'.format(filename))
-    bboxes, landmarks = get_all_face_attributes(filename)
-    pic = cv.imread(filename)
-    pic = draw_bboxes(pic, bboxes, landmarks)
-    cv.imwrite(filename, pic)
-
-    return img
+def get_all_face_attributes(full_path):
+    img = Image.open(full_path).convert('RGB')
+    bounding_boxes, landmarks = detect_faces(img)
+    return bounding_boxes, landmarks
 
 
 class FaceExpressionDataset(Dataset):
@@ -110,11 +98,21 @@ class FaceExpressionDataset(Dataset):
         self.samples = data[split]
         self.transformer = data_transforms[split]
 
+    def get_image(self, filename):
+        has_face, bboxes, landmarks = get_central_face_attributes(filename)
+        if not has_face:
+            raise FaceNotFoundError(filename)
+
+        img = align_face(filename, landmarks)
+        img = transforms.ToPILImage()(img)
+        img = self.transformer(img)
+        img = img.to(device)
+        return img
+
     def __getitem__(self, i):
         sample = self.samples[i]
         full_path = sample['image_path']
-        img = cv.imread(full_path)
-        img = crop_image(img, bbox)
+        img = self.get_image(full_path)
         img = cv.resize(img, (im_size, im_size))
 
         # img aug
@@ -130,5 +128,5 @@ class FaceExpressionDataset(Dataset):
 
 
 if __name__ == "__main__":
-    dataset = FaceAttributesDataset('train')
+    dataset = FaceExpressionDataset('train')
     print(dataset[0])

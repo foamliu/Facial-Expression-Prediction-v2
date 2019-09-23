@@ -4,8 +4,8 @@ from tensorboardX import SummaryWriter
 from torch import nn
 
 from config import device, grad_clip, print_freq, loss_ratio
-from data_gen import FaceAttributesDataset
-from models import FaceAttributeModel
+from data_gen import FaceExpressionDataset
+from models import FaceExpressionModel
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, get_logger, accuracy, adjust_learning_rate
 
 
@@ -20,7 +20,7 @@ def train_net(args):
 
     # Initialize / load checkpoint
     if checkpoint is None:
-        model = FaceAttributeModel()
+        model = FaceExpressionModel()
         model = nn.DataParallel(model)
 
         if args.optimizer == 'sgd':
@@ -47,9 +47,9 @@ def train_net(args):
     CrossEntropyLoss = nn.CrossEntropyLoss().to(device)
 
     # Custom dataloaders
-    train_dataset = FaceAttributesDataset('train')
+    train_dataset = FaceExpressionDataset('train')
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=4)
-    valid_dataset = FaceAttributesDataset('valid')
+    valid_dataset = FaceExpressionDataset('valid')
     valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False, num_workers=4)
 
     # scheduler = StepLR(optimizer, step_size=args.lr_step, gamma=0.1)
