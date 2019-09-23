@@ -84,14 +84,14 @@ def read_data(file_path):
     print('Start generating images...')
     train = save_data('fer2013/train', train_images, train_labels)
     data['train'] = train
-    print('The number of training data set is %d' % (len(train_data)))
+    print('The number of training data set is %d' % (len(train)))
     valid = save_data('fer2013/valid', valid_images, valid_labels)
     data['valid'] = valid
-    print('The number of validation data set is %d' % (len(valid_data)))
+    print('The number of validation data set is %d' % (len(valid)))
     # save_test_data('fer2013/test', test_images)
     test = save_data('fer2013/test', valid_images, valid_labels)
     data['test'] = test
-    print('The number of test data set is %d' % (len(test_data)))
+    print('The number of test data set is %d' % (len(test)))
     print('Completed.')
 
     with open('fer2013.pkl', 'wb') as file:
