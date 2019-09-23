@@ -6,6 +6,8 @@ import cv2 as cv
 import numpy as np
 import pandas as pd
 
+from data_gen import get_central_face_attributes
+
 
 # Define a function to show image through 48*48 pixels
 def show(img):
@@ -37,7 +39,10 @@ def save_data(dir_path, images, labels):
             os.makedirs(image_path)
         image_path = os.path.join(image_path, str(i) + '.png')
         cv.imwrite(image_path, image)
-        info.append({'image_path': image_path, label: int(label)})
+
+        has_face, bboxes, landmarks = get_central_face_attributes(image_path)
+        if has_face:
+            info.append({'image_path': image_path, label: int(label)})
     return info
 
 
