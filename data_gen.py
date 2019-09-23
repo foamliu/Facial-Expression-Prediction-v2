@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 
 from align_faces import get_reference_facial_points, warp_and_crop_face
-from config import device, im_size
+from config import im_size
 from mtcnn.detector import detect_faces
 
 # Data augmentation and normalization for training
@@ -87,20 +87,13 @@ class FaceExpressionDataset(Dataset):
         self.samples = data[split]
         self.transformer = data_transforms[split]
 
-    def get_image(self, filename):
+    def __getitem__(self, i):
+        sample = self.samples[i]
+        filename = sample['image_path']
         img = cv.imread(filename)
         img = img[..., ::-1]
         img = transforms.ToPILImage()(img)
         img = self.transformer(img)
-        img = img.to(device)
-        return img
-
-    def __getitem__(self, i):
-        sample = self.samples[i]
-        full_path = sample['image_path']
-        img = self.get_image(full_path)
-        print(img.size())
-
         label = sample['label']
         return img, label
 
