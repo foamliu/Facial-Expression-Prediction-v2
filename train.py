@@ -101,10 +101,10 @@ def train(train_loader, model, criterion, optimizer, epoch, logger):
     accs = AverageMeter()
 
     # Batches
-    for i, (img, reg, expression, gender, glasses, race) in enumerate(train_loader):
+    for i, (img, label) in enumerate(train_loader):
         # Move to GPU, if available
         img = img.to(device)
-        label = reg.to(device)  # [N, 1]
+        label = label.to(device)  # [N, 1]
 
         # Forward prop.
         out = model(img)  # embedding => [N, 7]
@@ -149,10 +149,10 @@ def valid(valid_loader, model, criterion, logger):
     accs = AverageMeter()
 
     # Batches
-    for i, (img, reg, expression, gender, glasses, race) in enumerate(valid_loader):
+    for i, (img, label) in enumerate(valid_loader):
         # Move to GPU, if available
         img = img.to(device)
-        label = reg.to(device)  # [N, 1]
+        label = label.to(device)  # [N, 1]
 
         # Forward prop.
         out = model(img)  # embedding => [N, 7]
