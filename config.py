@@ -18,4 +18,4 @@ train_data = 'fer2013/train'
 valid_data = 'fer2013/valid'
 num_train = 23635
 num_valid = 2971
-num_test = 2971
+num_test = 2944
