@@ -5,6 +5,7 @@ import pickle
 import cv2 as cv
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 from data_gen import get_central_face_attributes
 
@@ -27,11 +28,12 @@ def parse_images(data):
 
 
 def save_data(dir_path, images, labels):
+    print(dir_path)
     info = []
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
-    for i in range(len(images)):
+    for i in tqdm(range(len(images))):
         image = images[i].reshape(48, 48)
         label = str(labels[i])
         image_path = os.path.join(dir_path, label)
