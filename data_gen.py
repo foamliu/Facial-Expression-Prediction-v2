@@ -7,7 +7,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import math
 from align_faces import get_reference_facial_points, warp_and_crop_face
-from config import im_size
+from config import device, im_size
 from mtcnn.detector import detect_faces
 from utils import crop_image
 
@@ -102,7 +102,7 @@ def get_image(filename):
     return img
 
 
-class FaceAttributesDataset(Dataset):
+class FaceExpressionDataset(Dataset):
     def __init__(self, split):
         with open('fer2013.pkl', 'rb') as file:
             data = pickle.load(file)
