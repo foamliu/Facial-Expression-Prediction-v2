@@ -3,7 +3,7 @@ import torch
 from tensorboardX import SummaryWriter
 from torch import nn
 
-from config import device, grad_clip, print_freq
+from config import device, grad_clip, print_freq, num_workers
 from data_gen import FaceExpressionDataset
 from models import FaceExpressionModel
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, get_logger, accuracy, adjust_learning_rate
@@ -47,9 +47,11 @@ def train_net(args):
 
     # Custom dataloaders
     train_dataset = FaceExpressionDataset('train')
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=4)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
+                                               num_workers=num_workers)
     valid_dataset = FaceExpressionDataset('valid')
-    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False, num_workers=4)
+    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False,
+                                               num_workers=num_workers)
 
     # scheduler = StepLR(optimizer, step_size=args.lr_step, gamma=0.1)
 
