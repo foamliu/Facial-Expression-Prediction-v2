@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from data_gen import get_central_face_attributes
+from data_gen import get_central_face_attributes, align_face
 
 
 # Define a function to show image through 48*48 pixels
@@ -44,6 +44,8 @@ def save_data(dir_path, images, labels):
 
         try:
             has_face, bboxes, landmarks = get_central_face_attributes(image_path)
+            img = align_face(image_path, landmarks)
+            cv.imwrite(image_path, img)
             if has_face:
                 info.append({'image_path': image_path, 'label': int(label)})
         except Exception:

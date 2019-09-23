@@ -86,9 +86,8 @@ class FaceExpressionDataset(Dataset):
         self.transformer = data_transforms[split]
 
     def get_image(self, filename):
-        has_face, bboxes, landmarks = get_central_face_attributes(filename)
-
-        img = align_face(filename, landmarks)
+        img = cv.imread(filename)
+        img = img[..., ::-1]
         img = transforms.ToPILImage()(img)
         img = self.transformer(img)
         img = img.to(device)
