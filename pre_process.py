@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-
-import pandas as pd
-import numpy as np
-import cv2 as cv
 import os
+import pickle
+
+import cv2 as cv
+import numpy as np
+import pandas as pd
 
 
 # Define a function to show image through 48*48 pixels
@@ -24,6 +25,7 @@ def parse_images(data):
 
 
 def save_data(dir_path, images, labels):
+    info = []
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
@@ -35,6 +37,8 @@ def save_data(dir_path, images, labels):
             os.makedirs(image_path)
         image_path = os.path.join(image_path, str(i) + '.png')
         cv.imwrite(image_path, image)
+        info.append({'image_path': image_path, label: int(label)})
+    return info
 
 
 def save_test_data(dir_path, images):
@@ -68,14 +72,23 @@ def read_data(file_path):
     # show one image
     # show(train_images[8])
 
+    data = dict()
+
     print('Start generating images...')
-    save_data('fer2013/train', train_images, train_labels)
+    train = save_data('fer2013/train', train_images, train_labels)
+    data['train'] = train
     print('The number of training data set is %d' % (len(train_data)))
-    save_data('fer2013/valid', valid_images, valid_labels)
+    valid = save_data('fer2013/valid', valid_images, valid_labels)
+    data['valid'] = valid
     print('The number of validation data set is %d' % (len(valid_data)))
-    save_test_data('fer2013/test', test_images)
+    # save_test_data('fer2013/test', test_images)
+    test = save_data('fer2013/test', valid_images, valid_labels)
+    data['test'] = test
     print('The number of test data set is %d' % (len(test_data)))
     print('Completed.')
+
+    with open('fer2013.pkl', 'wb') as file:
+        pickle.dump(data, file)
 
 
 if __name__ == '__main__':

@@ -2,11 +2,14 @@ import pickle
 
 import cv2 as cv
 import numpy as np
+from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
-
-from config import im_size, pickle_file_aligned, num_train
-from utils import crop_image, name2idx
+import math
+from align_faces import get_reference_facial_points, warp_and_crop_face
+from config import im_size
+from mtcnn.detector import detect_faces
+from utils import crop_image
 
 # Data augmentation and normalization for training
 # Just normalization for validation
@@ -22,24 +25,94 @@ data_transforms = {
 }
 
 
+class FaceNotFoundError(Exception):
+    """Base class for other exceptions"""
+    pass
+
+
+def align_face(img_fn, facial5points):
+    raw = cv.imread(img_fn, True)
+    facial5points = np.reshape(facial5points, (2, 5))
+
+    crop_size = (im_size, im_size)
+
+    default_square = True
+    inner_padding_factor = 0.25
+    outer_padding = (0, 0)
+    output_size = (im_size, im_size)
+
+    # get the reference 5 landmarks position in the crop settings
+    reference_5pts = get_reference_facial_points(
+        output_size, inner_padding_factor, outer_padding, default_square)
+
+    # dst_img = warp_and_crop_face(raw, facial5points)
+    dst_img = warp_and_crop_face(raw, facial5points, reference_pts=reference_5pts, crop_size=crop_size)
+    return dst_img
+
+
+def select_central_face(im_size, bounding_boxes):
+    width, height = im_size
+    nearest_index = -1
+    nearest_distance = 100000
+    for i, b in enumerate(bounding_boxes):
+        x_box_center = (b[0] + b[2]) / 2
+        y_box_center = (b[1] + b[3]) / 2
+        x_img = width / 2
+        y_img = height / 2
+        distance = math.sqrt((x_box_center - x_img) ** 2 + (y_box_center - y_img) ** 2)
+        if distance < nearest_distance:
+            nearest_distance = distance
+            nearest_index = i
+
+    return nearest_index
+
+
+def get_central_face_attributes(full_path):
+    try:
+        img = Image.open(full_path).convert('RGB')
+        bounding_boxes, landmarks = detect_faces(img)
+
+        if len(landmarks) > 0:
+            i = select_central_face(img.size, bounding_boxes)
+            return True, [bounding_boxes[i]], [landmarks[i]]
+
+    except KeyboardInterrupt:
+        raise
+    except:
+        pass
+    return False, None, None
+
+
+def get_image(filename):
+    has_face, bboxes, landmarks = get_central_face_attributes(filename)
+    if not has_face:
+        raise FaceNotFoundError(filename)
+
+    img = align_face(filename, landmarks)
+    img = transforms.ToPILImage()(img)
+    img = transformer(img)
+    img = img.to(device)
+
+    print('drawing bboxes: {}'.format(filename))
+    bboxes, landmarks = get_all_face_attributes(filename)
+    pic = cv.imread(filename)
+    pic = draw_bboxes(pic, bboxes, landmarks)
+    cv.imwrite(filename, pic)
+
+    return img
+
+
 class FaceAttributesDataset(Dataset):
     def __init__(self, split):
-        with open(pickle_file_aligned, 'rb') as file:
+        with open('fer2013.pkl', 'rb') as file:
             data = pickle.load(file)
 
-        samples = data['samples']
-
-        if split == 'train':
-            self.samples = samples[:num_train]
-        else:
-            self.samples = samples[num_train:]
-
+        self.samples = data[split]
         self.transformer = data_transforms[split]
 
     def __getitem__(self, i):
         sample = self.samples[i]
-        full_path = sample['full_path']
-        bbox = sample['bboxes'][0]
+        full_path = sample['image_path']
         img = cv.imread(full_path)
         img = crop_image(img, bbox)
         img = cv.resize(img, (im_size, im_size))
@@ -49,17 +122,8 @@ class FaceAttributesDataset(Dataset):
         img = transforms.ToPILImage()(img)
         img = self.transformer(img)
 
-        age = sample['attr']['age'] / 100.
-        pitch = (sample['attr']['angle']['pitch'] + 180) / 360
-        roll = (sample['attr']['angle']['roll'] + 180) / 360
-        yaw = (sample['attr']['angle']['yaw'] + 180) / 360
-        beauty = sample['attr']['beauty'] / 100.
-
-        expression = name2idx(sample['attr']['expression']['type'])
-        gender = name2idx(sample['attr']['gender']['type'])
-        glasses = name2idx(sample['attr']['glasses']['type'])
-        race = name2idx(sample['attr']['race']['type'])
-        return img, np.array([age, pitch, roll, yaw, beauty]), expression, gender, glasses, race
+        label = sample['label']
+        return img, label
 
     def __len__(self):
         return len(self.samples)
