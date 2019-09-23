@@ -25,11 +25,6 @@ data_transforms = {
 }
 
 
-class FaceNotFoundError(Exception):
-    """Base class for other exceptions"""
-    pass
-
-
 def align_face(img_fn, facial5points):
     raw = cv.imread(img_fn, True)
     facial5points = np.reshape(facial5points, (2, 5))
@@ -68,19 +63,12 @@ def select_central_face(im_size, bounding_boxes):
 
 
 def get_central_face_attributes(full_path):
-    try:
-        img = Image.open(full_path).convert('RGB')
-        bounding_boxes, landmarks = detect_faces(img)
+    img = Image.open(full_path).convert('RGB')
+    bounding_boxes, landmarks = detect_faces(img)
 
-        if len(landmarks) > 0:
-            i = select_central_face(img.size, bounding_boxes)
-            return True, [bounding_boxes[i]], [landmarks[i]]
-
-    except KeyboardInterrupt:
-        raise
-    except:
-        pass
-    return False, None, None
+    if len(landmarks) > 0:
+        i = select_central_face(img.size, bounding_boxes)
+        return True, [bounding_boxes[i]], [landmarks[i]]
 
 
 def get_all_face_attributes(full_path):
@@ -99,8 +87,6 @@ class FaceExpressionDataset(Dataset):
 
     def get_image(self, filename):
         has_face, bboxes, landmarks = get_central_face_attributes(filename)
-        if not has_face:
-            raise FaceNotFoundError(filename)
 
         img = align_face(filename, landmarks)
         img = transforms.ToPILImage()(img)
