@@ -44,7 +44,7 @@ def save_data(dir_path, images, labels):
 
         has_face, bboxes, landmarks = get_central_face_attributes(image_path)
         if has_face:
-            info.append({'image_path': image_path, label: int(label)})
+            info.append({'image_path': image_path, 'label': int(label)})
     return info
 
 
@@ -88,8 +88,7 @@ def read_data(file_path):
     valid = save_data('fer2013/valid', valid_images, valid_labels)
     data['valid'] = valid
     print('The number of validation data set is %d' % (len(valid)))
-    # save_test_data('fer2013/test', test_images)
-    test = save_data('fer2013/test', valid_images, valid_labels)
+    test = save_data('fer2013/test', test_images, test_labels)
     data['test'] = test
     print('The number of test data set is %d' % (len(test)))
     print('Completed.')

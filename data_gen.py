@@ -10,7 +10,6 @@ from torchvision import transforms
 from align_faces import get_reference_facial_points, warp_and_crop_face
 from config import device, im_size
 from mtcnn.detector import detect_faces
-from utils import crop_image
 
 # Data augmentation and normalization for training
 # Just normalization for validation
@@ -114,11 +113,6 @@ class FaceExpressionDataset(Dataset):
         full_path = sample['image_path']
         img = self.get_image(full_path)
         img = cv.resize(img, (im_size, im_size))
-
-        # img aug
-        img = img[..., ::-1]  # RGB
-        img = transforms.ToPILImage()(img)
-        img = self.transformer(img)
 
         label = sample['label']
         return img, label
