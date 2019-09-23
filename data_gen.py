@@ -91,6 +91,7 @@ class FaceExpressionDataset(Dataset):
         sample = self.samples[i]
         filename = sample['image_path']
         img = cv.imread(filename)
+        img = cv.resize(img, (im_size, im_size))
         img = img[..., ::-1]
         img = transforms.ToPILImage()(img)
         img = self.transformer(img)
