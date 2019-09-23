@@ -112,7 +112,7 @@ class FaceExpressionDataset(Dataset):
         sample = self.samples[i]
         full_path = sample['image_path']
         img = self.get_image(full_path)
-        img = cv.resize(img, (im_size, im_size))
+        print(img.size())
 
         label = sample['label']
         return img, label
