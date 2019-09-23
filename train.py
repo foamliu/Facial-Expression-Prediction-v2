@@ -10,8 +10,8 @@ from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, get_
 
 
 def train_net(args):
-    torch.manual_seed(7)
-    np.random.seed(7)
+    # torch.manual_seed(7)
+    # np.random.seed(7)
     checkpoint = args.checkpoint
     start_epoch = 0
     best_loss = float('inf')
