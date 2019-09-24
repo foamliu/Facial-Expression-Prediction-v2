@@ -35,3 +35,5 @@ if __name__ == "__main__":
         img = cv.imread(filename)
         new_name = 'images/{}.jpg'.format(i)
         cv.imwrite(new_name, img)
+        label = sample['label']
+        print(label)
