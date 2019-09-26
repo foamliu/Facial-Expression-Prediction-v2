@@ -42,14 +42,14 @@ def save_data(dir_path, images, labels):
         image_path = os.path.join(image_path, str(i) + '.png')
         cv.imwrite(image_path, image)
 
-        try:
-            has_face, bboxes, landmarks = get_central_face_attributes(image_path)
-            img = align_face(image_path, landmarks)
-            cv.imwrite(image_path, img)
-            if has_face:
-                info.append({'image_path': image_path, 'label': int(label)})
-        except Exception:
-            pass
+        # try:
+        #     has_face, bboxes, landmarks = get_central_face_attributes(image_path)
+        #     img = align_face(image_path, landmarks)
+        #     cv.imwrite(image_path, img)
+        #     if has_face:
+        #         info.append({'image_path': image_path, 'label': int(label)})
+        # except Exception:
+        #     pass
     return info
 
 
