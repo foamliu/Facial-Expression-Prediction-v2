@@ -16,6 +16,6 @@ loss_ratio = 100
 
 train_data = 'fer2013/train'
 valid_data = 'fer2013/valid'
-num_train = 23635
-num_valid = 2971
-num_test = 2944
+num_train = 28709
+num_valid = 3589
+num_test = 3589
