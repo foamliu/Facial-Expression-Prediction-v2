@@ -12,7 +12,7 @@ class FaceExpressionModel(nn.Module):
         # Remove linear and pool layers (since we're not doing classification)
         modules = list(resnet.children())[:-2]
         self.resnet = nn.Sequential(*modules)
-        self.dropout = nn.Dropout()
+        self.dropout = nn.Dropout(0.2)
         self.avgpool = nn.AvgPool2d(kernel_size=4)
         self.fc = nn.Linear(2048, num_classes)
         self.softmax = nn.Softmax(dim=-1)
