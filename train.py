@@ -74,6 +74,9 @@ def train_net(args):
         writer.add_scalar('model/train_loss', train_loss, epoch)
         writer.add_scalar('model/train_acc', train_acc, epoch)
 
+        lr = optimizer.param_groups[0]['lr']
+        writer.add_scalar('model/learning_rate', lr, epoch)
+
         # One epoch's validation
         valid_loss, valid_acc = valid(valid_loader=valid_loader,
                                       model=model,
