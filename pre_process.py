@@ -42,6 +42,7 @@ def save_data(dir_path, images, labels):
         image_path = os.path.join(image_path, str(i) + '.png')
         cv.imwrite(image_path, image)
 
+        info.append({'image_path': image_path, 'label': int(label)})
         # try:
         #     has_face, bboxes, landmarks = get_central_face_attributes(image_path)
         #     img = align_face(image_path, landmarks)
