@@ -88,7 +88,7 @@ def train_net(args):
 
         # Check if there was an improvement
         is_best = valid_acc > best_acc
-        best_acc = max(valid_loss, best_acc)
+        best_acc = max(valid_acc, best_acc)
         if not is_best:
             epochs_since_improvement += 1
             print("\nEpochs since last improvement: %d\n" % (epochs_since_improvement,))
