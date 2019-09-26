@@ -14,7 +14,7 @@ def train_net(args):
     np.random.seed(7)
     checkpoint = args.checkpoint
     start_epoch = 0
-    best_loss = float('inf')
+    best_acc = 0
     writer = SummaryWriter()
     epochs_since_improvement = 0
 
@@ -84,8 +84,8 @@ def train_net(args):
         writer.add_scalar('model/valid_acc', valid_acc, epoch)
 
         # Check if there was an improvement
-        is_best = valid_loss < best_loss
-        best_loss = min(valid_loss, best_loss)
+        is_best = valid_acc > best_acc
+        best_acc = max(valid_loss, best_acc)
         if not is_best:
             epochs_since_improvement += 1
             print("\nEpochs since last improvement: %d\n" % (epochs_since_improvement,))
@@ -93,7 +93,7 @@ def train_net(args):
             epochs_since_improvement = 0
 
         # Save checkpoint
-        save_checkpoint(epoch, epochs_since_improvement, model, optimizer, best_loss, is_best)
+        save_checkpoint(epoch, epochs_since_improvement, model, optimizer, best_acc, is_best)
 
 
 def train(train_loader, model, criterion, optimizer, epoch, logger):
