@@ -122,6 +122,7 @@ if __name__ == '__main__':
     transformer = data_transforms['valid']
 
     y_pred, y_test = predict(model, samples)
+    y_pred = decode(y_pred)
     print("y_pred: " + str(y_pred))
 
     y_test = decode(y_test)
