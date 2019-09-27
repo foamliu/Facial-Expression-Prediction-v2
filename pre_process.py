@@ -6,7 +6,7 @@ import cv2 as cv
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-
+from config import data_file
 from data_gen import get_central_face_attributes, align_face
 
 
@@ -98,7 +98,7 @@ def read_data(file_path):
     print('The number of test data set is %d' % (len(test)))
     print('Completed.')
 
-    with open('fer2013.pkl', 'wb') as file:
+    with open(data_file, 'wb') as file:
         pickle.dump(data, file)
 
 

@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 
 from align_faces import get_reference_facial_points, warp_and_crop_face
-from config import im_size
+from config import im_size, data_file
 from mtcnn.detector import detect_faces
 
 # Data augmentation and normalization for training
@@ -80,7 +80,7 @@ def get_all_face_attributes(full_path):
 
 class FaceExpressionDataset(Dataset):
     def __init__(self, split):
-        with open('fer2013.pkl', 'rb') as file:
+        with open(data_file, 'rb') as file:
             data = pickle.load(file)
 
         self.samples = data[split]

@@ -2,7 +2,6 @@
 import cv2 as cv
 import numpy as np
 import argparse
-import dlib
 import time
 import keras.backend as K
 from utils import load_emotion_model

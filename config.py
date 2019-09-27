@@ -19,3 +19,4 @@ valid_data = 'fer2013/valid'
 num_train = 28709
 num_valid = 3589
 num_test = 3589
+data_file = 'fer2013.pkl'
