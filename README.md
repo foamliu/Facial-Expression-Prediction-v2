@@ -39,8 +39,8 @@ $ tensorboard --logdir path_to_current_dir/logs
 
 
 
-### Analysis
-Rename the best model to "Model.best.hdf5", put it in "models" folder, and use 3,589 images [Usage='PrivateTest'] for result analysis:
+### Test
+Evaluate accuracy with test set:
 ```bash
 $ python analyze.py
 ```
