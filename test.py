@@ -92,7 +92,7 @@ def plot_confusion_matrix(cm, classes,
 
 def calc_acc(y_pred, y_test):
     num_corrects = 0
-    for i in range(num_test_samples):
+    for i in range(len(y_pred)):
         pred = y_pred[i]
         test = y_test[i]
         if pred == test:
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     num_classes = 7
     class_names = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
     # emotion = {0:'愤怒', 1:'厌恶', 2:'恐惧', 3:'高兴', 4:'悲伤', 5:'惊讶', 6: '无表情'}
-    num_test_samples = 3589
+    num_test_samples = 2944
 
     checkpoint = 'facial_expression.pt'
     print('loading model: {}...'.format(checkpoint))
