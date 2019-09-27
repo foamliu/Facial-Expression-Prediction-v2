@@ -43,7 +43,7 @@ If you want to visualize during training, run in your terminal:
 $ tensorboard --logdir path_to_current_dir/logs
 ```
 
- ![image](https://github.com/foamliu/Facial-Expression-Prediction/raw/master/images/train.png)
+ ![image](https://github.com/foamliu/Facial-Expression-Prediction-v2/raw/master/images/train.png)
 
 
 
@@ -58,16 +58,14 @@ $ python analyze.py
 
 #### Confusion matrix:
 
- ![image](https://github.com/foamliu/Facial-Expression-Prediction/raw/master/images/confusion_matrix_not_normalized.png)
+ ![image](https://github.com/foamliu/Facial-Expression-Prediction-v2/raw/master/images/confusion_matrix_not_normalized.png)
 
- ![image](https://github.com/foamliu/Facial-Expression-Prediction/raw/master/images/confusion_matrix_normalized.png)
+ ![image](https://github.com/foamliu/Facial-Expression-Prediction-v2/raw/master/images/confusion_matrix_normalized.png)
 
 
 ### Demo
-Download [pre-trained model](https://github.com/foamliu/Facial-Expression-Prediction/releases/download/v1.0/model.best.hdf5) into "models" folder then run:
+Download [pre-trained model](https://github.com/foamliu/Facial-Expression-Prediction-v2/releases/download/v1.0/model.best.hdf5) into "models" folder then run:
 
 ```bash
 $ python demo.py --v [video_path]
 ```
-
- ![image](https://github.com/foamliu/Facial-Expression-Prediction/raw/master/images/demo.gif)
