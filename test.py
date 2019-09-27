@@ -35,19 +35,20 @@ def predict(model, samples):
 
     start = time.time()
 
-    for sample in tqdm(samples):
-        filename = sample['image_path']
-        img = cv.imread(filename)
-        img = cv.resize(img, (im_size, im_size))
-        img = img[..., ::-1]
-        img = transforms.ToPILImage()(img)
-        img = transformer(img)
-        img = torch.unsqueeze(img, dim=0)
-        img = img.to(device)
-        pred = model(img)[0]
-        pred = pred.cpu().numpy()
-        pred = np.argmax(pred)
-        y_pred.append(pred)
+    with torch.no_grad():
+        for sample in tqdm(samples):
+            filename = sample['image_path']
+            img = cv.imread(filename)
+            img = cv.resize(img, (im_size, im_size))
+            img = img[..., ::-1]
+            img = transforms.ToPILImage()(img)
+            img = transformer(img)
+            img = torch.unsqueeze(img, dim=0)
+            img = img.to(device)
+            pred = model(img)[0]
+            pred = pred.cpu().numpy()
+            pred = np.argmax(pred)
+            y_pred.append(pred)
 
     end = time.time()
     seconds = end - start
@@ -117,7 +118,6 @@ if __name__ == '__main__':
     # emotion = {0:'愤怒', 1:'厌恶', 2:'恐惧', 3:'高兴', 4:'悲伤', 5:'惊讶', 6: '无表情'}
     num_test_samples = 3589
 
-    print("\nLoad the trained ResNet model....")
     checkpoint = 'facial_expression.pt'
     print('loading model: {}...'.format(checkpoint))
     model = FaceExpressionModel()
