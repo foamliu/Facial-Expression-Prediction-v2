@@ -42,7 +42,7 @@ def predict(model, samples):
 
     end = time.time()
     seconds = end - start
-    print('avg fps: {}'.format(str(num_test_samples / seconds)))
+    print('avg fps: {}'.format(str(len(samples) / seconds)))
 
     return y_pred, y_test
 
