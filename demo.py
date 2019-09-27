@@ -43,4 +43,4 @@ if __name__ == '__main__':
         print(class_names[pred])
     end = time.time()
     elapsed = end - start
-    print('{} seconds per image'.format(elapsed / len(test_images)))
+    print('{:.4f} seconds per image'.format(elapsed / len(test_images)))
