@@ -20,9 +20,9 @@ You can get it from [Kaggle](https://www.kaggle.com/c/challenges-in-representati
 ## Usage
 
 ### Data Pre-processing
-Extract 28,709 images [Usage='Training'] for training, and 3,589 [Usage='PublicTest'] for validation:
+Extract 28,709 images for training, 3,589 for validation, and 3,589 for test:
 ```bash
-$ python pre-process.py
+$ python pre_process.py
 ```
   
 ### Train
@@ -39,7 +39,7 @@ $ tensorboard --logdir runs
 ### Test
 Evaluate accuracy with test set:
 ```bash
-$ python analyze.py
+$ python test.py
 ```
 
 #### Test acc: 

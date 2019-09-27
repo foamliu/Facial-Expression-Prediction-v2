@@ -97,14 +97,13 @@ def calc_acc(y_pred, y_test):
         test = y_test[i]
         if pred == test:
             num_corrects += 1
-    return num_corrects / num_test_samples
+    return num_corrects / len(y_pred)
 
 
 if __name__ == '__main__':
     num_classes = 7
     class_names = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
     # emotion = {0:'愤怒', 1:'厌恶', 2:'恐惧', 3:'高兴', 4:'悲伤', 5:'惊讶', 6: '无表情'}
-    num_test_samples = 2944
 
     checkpoint = 'facial_expression.pt'
     print('loading model: {}...'.format(checkpoint))
