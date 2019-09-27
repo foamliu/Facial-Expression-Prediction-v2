@@ -101,7 +101,7 @@ def accuracy(scores, targets, k=1):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Train face network')
+    parser = argparse.ArgumentParser(description='Facial expression recognition')
     # general
     parser.add_argument('--end-epoch', type=int, default=1000, help='training epoch size.')
     parser.add_argument('--lr', type=float, default=0.001, help='start learning rate')
@@ -111,7 +111,6 @@ def parse_args():
     parser.add_argument('--mom', type=float, default=0.9, help='momentum')
     parser.add_argument('--batch-size', type=int, default=32, help='batch size in each context')
     parser.add_argument('--checkpoint', type=str, default=None, help='checkpoint')
-    parser.add_argument('--use-se', type=bool, default=False, help='use SEBlock')
     parser.add_argument('--pretrained', type=bool, default=False, help='pretrained model')
     args = parser.parse_args()
     return args
