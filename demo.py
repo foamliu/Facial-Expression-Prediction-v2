@@ -1,4 +1,6 @@
 # import the necessary packages
+import time
+
 import numpy as np
 import torch
 from torchvision import transforms
@@ -23,7 +25,7 @@ if __name__ == '__main__':
     model.eval()
 
     test_images = ['images/test_image_happy.jpg', 'images/test_image_angry.jpg']
-
+    start = time.time()
     for filename in test_images:
         has_face, bboxes, landmarks = get_central_face_attributes(filename)
         img = align_face(filename, landmarks)
@@ -32,10 +34,13 @@ if __name__ == '__main__':
         img = transformer(img)
         img = torch.unsqueeze(img, dim=0)
         img = img.to(device)
-    
+
         with torch.no_grad():
             pred = model(img)[0]
 
         pred = pred.cpu().numpy()
         pred = np.argmax(pred)
         print(class_names[pred])
+    end = time.time()
+    elapsed = end - start
+    print('{} seconds per image'.format(elapsed / len(test_images)))
