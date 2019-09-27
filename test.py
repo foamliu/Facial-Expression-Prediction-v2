@@ -54,7 +54,7 @@ def predict(model, samples):
     seconds = end - start
     print('avg fps: {}'.format(str(num_test_samples / seconds)))
 
-    return y_pred, y_prob
+    return y_pred
 
 
 def decode(y_test):
@@ -131,7 +131,7 @@ if __name__ == '__main__':
     samples = data['test']
     transformer = data_transforms['valid']
 
-    y_pred, y_prob = predict(model, samples)
+    y_pred = predict(model, samples)
     print("y_pred: " + str(y_pred))
 
     y_test = read_data('fer2013/fer2013.csv')
