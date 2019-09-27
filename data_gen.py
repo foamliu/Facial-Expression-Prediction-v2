@@ -71,6 +71,7 @@ def get_central_face_attributes(full_path):
     if len(landmarks) > 0:
         i = select_central_face(img.size, bounding_boxes)
         return True, [bounding_boxes[i]], [landmarks[i]]
+    return False, None, None
 
 
 def get_all_face_attributes(full_path):
