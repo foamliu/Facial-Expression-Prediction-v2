@@ -43,6 +43,7 @@ def predict(model, samples):
         img = transforms.ToPILImage()(img)
         img = transformer(img)
         img = torch.unsqueeze(img, dim=0)
+        img = img.to(device)
         pred = model(img)[0]
         pred = pred.cpu().numpy()
         pred = np.argmax(pred)
