@@ -1,7 +1,7 @@
 # Facial Expression Prediction
 
 
-This repository is to do facial expression prediction by fine-tuning ResNet-101 with FER-2013 Faces Database.
+This repository is to do facial expression prediction by fine-tuning ResNet-152 with FER-2013 Faces Database.
 
 
 ## Dependencies
