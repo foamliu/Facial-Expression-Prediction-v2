@@ -1,4 +1,5 @@
 # import the necessary packages
+import os
 import time
 
 import numpy as np
@@ -24,9 +25,11 @@ if __name__ == '__main__':
     model = model.to(device)
     model.eval()
 
-    test_images = ['images/test_image_happy.jpg', 'images/test_image_angry.jpg']
+    test_images = ['images/test_image_angry.jpg', 'test_image_disgust.jpg', 'test_image_fear.jpg',
+                   'test_image_happy.jpg', 'test_image_sad.jpg', 'test_image_surprise.jpg', 'test_image_neutral.jpg', ]
     start = time.time()
     for filename in test_images:
+        filename = os.path.join('images', filename)
         has_face, bboxes, landmarks = get_central_face_attributes(filename)
         img = align_face(filename, landmarks)
         img = img[..., ::-1]
