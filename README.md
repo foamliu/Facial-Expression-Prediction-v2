@@ -6,10 +6,8 @@ This repository is to do facial expression prediction by fine-tuning ResNet-101 
 
 ## Dependencies
 
-- [NumPy](http://docs.scipy.org/doc/numpy-1.10.1/user/install.html)
-- [Tensorflow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html)
-- [Keras](https://keras.io/#installation)
-- [OpenCV](https://opencv-python-tutroals.readthedocs.io/en/latest/)
+- Python 3.5.2
+- PyTorch 1.0
 
 ## Dataset
 
@@ -17,13 +15,7 @@ I use the FER-2013 Faces Database, a set of 35,887 pictures of people displaying
 
  ![image](https://github.com/foamliu/Facial-Expression-Prediction/raw/master/images/random.png)
 
-You can get it from [Kraggle](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data), make sure fer2013.csv is in fer2013 folder.
-
-## ImageNet Pretrained Models
-
-Download [ResNet-101](https://drive.google.com/file/d/0Byy2AcGyEVxfTmRRVmpGWDczaXM/view?usp=sharing) into models folder.
-
-I met OOM error when fine-tuning ResNet-152, you may want to have a try.
+You can get it from [Kaggle](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data), make sure fer2013.csv is in fer2013 folder.
 
 ## Usage
 
@@ -64,8 +56,8 @@ $ python analyze.py
 
 
 ### Demo
-Download [pre-trained model](https://github.com/foamliu/Facial-Expression-Prediction-v2/releases/download/v1.0/model.best.hdf5) into "models" folder then run:
+Download [pre-trained model](https://github.com/foamliu/Facial-Expression-Prediction-v2/releases/download/v1.0/facial_expression.pt) then run:
 
 ```bash
-$ python demo.py --v [video_path]
+$ python demo.py
 ```
