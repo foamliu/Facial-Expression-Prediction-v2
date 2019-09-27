@@ -7,7 +7,6 @@ import time
 import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import torch
 from sklearn.metrics import confusion_matrix
 from torchvision import transforms
@@ -18,26 +17,16 @@ from data_gen import data_transforms
 from models import FaceExpressionModel
 
 
-def read_data(file_path):
-    data = pd.read_csv(file_path)
-    print(data.shape)
-    print(data.head())
-    print(np.unique(data["Usage"].values.ravel()))
-    print('The number of PrivateTest data set is %d' % (len(data[data.Usage == "PrivateTest"])))
-    test_data = data[data.Usage == "PrivateTest"]
-    # test_images = parse_images(test_data)
-    y_test = test_data["emotion"].values.ravel()
-    return y_test
-
-
 def predict(model, samples):
     y_pred = []
+    y_test = []
 
     start = time.time()
 
     with torch.no_grad():
         for sample in tqdm(samples):
             filename = sample['image_path']
+            label = int(sample['label'])
             img = cv.imread(filename)
             img = cv.resize(img, (im_size, im_size))
             img = img[..., ::-1]
@@ -49,12 +38,13 @@ def predict(model, samples):
             pred = pred.cpu().numpy()
             pred = np.argmax(pred)
             y_pred.append(pred)
+            y_test.append(label)
 
     end = time.time()
     seconds = end - start
     print('avg fps: {}'.format(str(num_test_samples / seconds)))
 
-    return y_pred
+    return y_pred, y_test
 
 
 def decode(y_test):
@@ -131,10 +121,9 @@ if __name__ == '__main__':
     samples = data['test']
     transformer = data_transforms['valid']
 
-    y_pred = predict(model, samples)
+    y_pred, y_test = predict(model, samples)
     print("y_pred: " + str(y_pred))
 
-    y_test = read_data('fer2013/fer2013.csv')
     y_test = decode(y_test)
     print("y_test: " + str(y_test))
 
