@@ -22,18 +22,20 @@ if __name__ == '__main__':
     model = model.to(device)
     model.eval()
 
-    filename = 'images/test_image_happy.jpg'
-    has_face, bboxes, landmarks = get_central_face_attributes(filename)
-    img = align_face(filename, landmarks)
-    img = img[..., ::-1]
-    img = transforms.ToPILImage()(img)
-    img = transformer(img)
-    img = torch.unsqueeze(img, dim=0)
-    img = img.to(device)
+    test_images = ['images/test_image_happy.jpg', 'images/test_image_angry.jpg']
 
-    with torch.no_grad():
-        pred = model(img)[0]
+    for filename in test_images:
+        has_face, bboxes, landmarks = get_central_face_attributes(filename)
+        img = align_face(filename, landmarks)
+        img = img[..., ::-1]
+        img = transforms.ToPILImage()(img)
+        img = transformer(img)
+        img = torch.unsqueeze(img, dim=0)
+        img = img.to(device)
+    
+        with torch.no_grad():
+            pred = model(img)[0]
 
-    pred = pred.cpu().numpy()
-    pred = np.argmax(pred)
-    print(class_names[pred])
+        pred = pred.cpu().numpy()
+        pred = np.argmax(pred)
+        print(class_names[pred])
