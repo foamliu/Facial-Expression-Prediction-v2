@@ -32,11 +32,8 @@ $ python train.py
 
 If you want to visualize during training, run in your terminal:
 ```bash
-$ tensorboard --logdir path_to_current_dir/logs
+$ tensorboard --logdir runs
 ```
-
- ![image](https://github.com/foamliu/Facial-Expression-Prediction-v2/raw/master/images/train.png)
-
 
 
 ### Test
@@ -46,7 +43,7 @@ $ python analyze.py
 ```
 
 #### Test acc: 
-**65.46%**
+**76.63%**
 
 #### Confusion matrix:
 
