@@ -10,9 +10,9 @@ if __name__ == '__main__':
     start = time.time()
     checkpoint = torch.load(checkpoint)
     print('elapsed {} sec'.format(time.time() - start))
-    model = checkpoint['model']
-    print(model)
-    print(type(model))
+    model = checkpoint['model'].module
+    # print(model)
+    # print(type(model))
 
     # model.eval()
     filename = 'facial_expression.pt'
