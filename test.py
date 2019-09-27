@@ -101,8 +101,6 @@ def calc_acc(y_pred, y_test):
 
 
 if __name__ == '__main__':
-    img_width, img_height = 224, 224
-    num_channels = 3
     num_classes = 7
     class_names = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
     # emotion = {0:'愤怒', 1:'厌恶', 2:'恐惧', 3:'高兴', 4:'悲伤', 5:'惊讶', 6: '无表情'}
