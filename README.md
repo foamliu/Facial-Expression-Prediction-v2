@@ -1,39 +1,39 @@
-# 面部表情识别
+# Facial Expression Prediction
 
 
-基于 FER-2013 人脸表情数据集对 ResNet-101 进行微调来进行面部表情识别。
+This repository is to do facial expression prediction by fine-tuning ResNet-101 with FER-2013 Faces Database.
 
 
-## 依赖
+## Dependencies
 
 - [NumPy](http://docs.scipy.org/doc/numpy-1.10.1/user/install.html)
 - [Tensorflow](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html)
 - [Keras](https://keras.io/#installation)
 - [OpenCV](https://opencv-python-tutroals.readthedocs.io/en/latest/)
 
-## 数据集
+## Dataset
 
-我使用了 FER-2013 人脸表情数据集，这是一组显示7种情绪表达（愤怒，厌恶，恐惧，快乐，伤心，惊讶和中立）的35,887张照片。
+I use the FER-2013 Faces Database, a set of 35,887 pictures of people displaying 7 emotional expressions (angry, disgusted, fearful, happy, sad, surprised and neutral).
 
  ![image](https://github.com/foamliu/Facial-Expression-Prediction/raw/master/images/random.png)
 
-你可以从 [Kaggle](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data)下载数据集，别忘了把fer2013.csv放在fer2013文件夹中。
+You can get it from [Kraggle](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data), make sure fer2013.csv is in fer2013 folder.
 
-## ImageNet 预训练模型
+## ImageNet Pretrained Models
 
-下载 [ResNet-101](https://drive.google.com/file/d/0Byy2AcGyEVxfTmRRVmpGWDczaXM/view?usp=sharing) 放在 models 文件夹中。
+Download [ResNet-101](https://drive.google.com/file/d/0Byy2AcGyEVxfTmRRVmpGWDczaXM/view?usp=sharing) into models folder.
 
-我在微调ResNet-152时遇到了OOM错误，你不妨试一下。
+I met OOM error when fine-tuning ResNet-152, you may want to have a try.
 
-## 如何使用
+## Usage
 
-### 数据预处理
-解压 28,709 张训练图片, 和 3,589 张验证图片:
+### Data Pre-processing
+Extract 28,709 images [Usage='Training'] for training, and 3,589 [Usage='PublicTest'] for validation:
 ```bash
 $ python pre-process.py
 ```
   
-### 训练
+### Train
 ```bash
 $ python train.py
 ```
@@ -47,16 +47,16 @@ $ tensorboard --logdir path_to_current_dir/logs
 
 
 
-### 结果分析
-将最好的模型重命名为“Model.best.hdf5”，将其放在“models”文件夹中，并使用3,589个测试集图片进行结果分析：
+### Analysis
+Rename the best model to "Model.best.hdf5", put it in "models" folder, and use 3,589 images [Usage='PrivateTest'] for result analysis:
 ```bash
 $ python analyze.py
 ```
 
-#### 测试集准确率: 
+#### Test acc: 
 **65.46%**
 
-#### 混淆矩阵:
+#### Confusion matrix:
 
  ![image](https://github.com/foamliu/Facial-Expression-Prediction/raw/master/images/confusion_matrix_not_normalized.png)
 
@@ -64,7 +64,7 @@ $ python analyze.py
 
 
 ### Demo
-下载 [预训练模型](https://github.com/foamliu/Facial-Expression-Prediction/releases/download/v1.0/model.best.hdf5) 放在 "models" 目录下然后执行:
+Download [pre-trained model](https://github.com/foamliu/Facial-Expression-Prediction/releases/download/v1.0/model.best.hdf5) into "models" folder then run:
 
 ```bash
 $ python demo.py --v [video_path]
