@@ -139,10 +139,12 @@ if __name__ == '__main__':
     plt.figure()
     plot_confusion_matrix(cnf_matrix, classes=class_names,
                           title='Confusion matrix, without normalization')
+    plt.savefig('images/confusion_matrix_not_normalized.png')
 
     # Plot normalized confusion matrix
     plt.figure()
     plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
                           title='Normalized confusion matrix')
+    plt.savefig('images/confusion_matrix_normalized.png')
 
     plt.show()
