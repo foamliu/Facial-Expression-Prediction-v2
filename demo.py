@@ -1,11 +1,11 @@
 # import the necessary packages
-import cv2 as cv
 import numpy as np
 import torch
 from torchvision import transforms
 
-from config import device, im_size
+from config import device
 from data_gen import data_transforms
+from data_gen import get_central_face_attributes, align_face
 from models import FaceExpressionModel
 
 if __name__ == '__main__':
@@ -23,8 +23,8 @@ if __name__ == '__main__':
     model.eval()
 
     filename = 'images/test_image_happy.jpg'
-    img = cv.imread(filename)
-    img = cv.resize(img, (im_size, im_size))
+    has_face, bboxes, landmarks = get_central_face_attributes(filename)
+    img = align_face(filename, landmarks)
     img = img[..., ::-1]
     img = transforms.ToPILImage()(img)
     img = transformer(img)
