@@ -22,7 +22,7 @@ if __name__ == '__main__':
     model = model.to(device)
     model.eval()
 
-    filename = 'images/test_image_angry.jpg'
+    filename = 'images/test_image_happy.jpg'
     img = cv.imread(filename)
     img = cv.resize(img, (im_size, im_size))
     img = img[..., ::-1]
