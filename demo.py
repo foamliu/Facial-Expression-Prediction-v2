@@ -30,7 +30,8 @@ if __name__ == '__main__':
     img = transformer(img)
     img = torch.unsqueeze(img, dim=0)
     img = img.to(device)
-    pred = model(img)[0]
+    with torch.no_grad():
+        pred = model(img)[0]
     pred = pred.cpu().numpy()
     pred = np.argmax(pred)
     print(class_names[pred])
