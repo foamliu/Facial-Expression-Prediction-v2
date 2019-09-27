@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 
 import itertools
-import os
 import pickle
 import time
 
+import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
 from sklearn.metrics import confusion_matrix
+from torchvision import transforms
+from tqdm import tqdm
 
-from config import device, data_file
+from config import device, im_size, data_file
+from data_gen import data_transforms
 from models import FaceExpressionModel
 
 
@@ -29,26 +32,21 @@ def read_data(file_path):
 
 def predict(model, samples):
     y_pred = []
-    y_prob = []
 
-    img_files = []
     start = time.time()
 
-    for sample in samples:
-        img_path = sample['image_path']
+    for sample in tqdm(samples):
+        filename = sample['image_path']
         img = cv.imread(filename)
         img = cv.resize(img, (im_size, im_size))
         img = img[..., ::-1]
         img = transforms.ToPILImage()(img)
-        img = self.transformer(img)
-        img = image.load_img(img_path, target_size=(224, 224))
-        x = image.img_to_array(img)
-        preds = model.predict(x[None, :, :, :])
-        decoded = decode_predictions(preds, top=1)
-        pred_label = decoded[0][0][0]
-        pred_prob = decoded[0][0][1]
-        y_pred.append(pred_label)
-        y_prob.append(pred_prob)
+        img = transformer(img)
+        img = torch.unsqueeze(img, dim=0)
+        pred = model(img)[0]
+        pred = pred.cpu().numpy()
+        pred = np.argmax(pred)
+        y_pred.append(pred)
 
     end = time.time()
     seconds = end - start
@@ -130,6 +128,7 @@ if __name__ == '__main__':
         data = pickle.load(file)
 
     samples = data['test']
+    transformer = data_transforms['valid']
 
     y_pred, y_prob = predict(model, samples)
     print("y_pred: " + str(y_pred))
