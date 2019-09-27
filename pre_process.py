@@ -49,7 +49,7 @@ def save_data(dir_path, images, labels):
             if has_face:
                 info.append({'image_path': image_path, 'label': int(label)})
         except Exception:
-            pass
+            info.append({'image_path': image_path, 'label': int(label)})
     return info
 
 
