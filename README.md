@@ -43,7 +43,7 @@ $ python test.py
 ```
 
 #### Test acc: 
-**63.75%**
+**67.73%**
 
 #### Confusion matrix:
 
