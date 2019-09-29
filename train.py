@@ -5,6 +5,7 @@ from torch import nn
 
 from config import device, grad_clip, print_freq, num_workers
 from data_gen import FaceExpressionDataset
+from focal_loss import FocalLoss
 from models import FaceExpressionModel
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, get_logger, accuracy, adjust_learning_rate
 
@@ -43,7 +44,8 @@ def train_net(args):
     model = model.to(device)
 
     # Loss function
-    criterion = nn.CrossEntropyLoss().to(device)
+    # criterion = nn.CrossEntropyLoss().to(device)
+    criterion = FocalLoss(2.0).to(device)
 
     # Custom dataloaders
     train_dataset = FaceExpressionDataset('train')
