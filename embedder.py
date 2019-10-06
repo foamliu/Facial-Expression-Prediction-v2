@@ -18,11 +18,13 @@ from models import FaceExpressionModel
 
 
 def predict(model, samples):
-    y_pred = []
+    num_samples = len(samples)
+    embedding_list = []
 
     start = time.time()
 
-    for sample in tqdm(samples):
+    for i in tqdm(range(num_samples)):
+        sample = samples[i]
         filename = sample['image_path']
         img = cv.imread(filename)
         img = cv.resize(img, (im_size, im_size))
@@ -31,17 +33,20 @@ def predict(model, samples):
         img = transformer(img)
         img = torch.unsqueeze(img, dim=0)
         img = img.to(device)
+
         with torch.no_grad():
             pred = model(img)[0]
-        pred = pred.cpu().numpy()
-        pred = np.argmax(pred)
-        y_pred.append(pred)
+
+        embedded = pred[0].cpu().numpy()
+        print(embedded.shape)
+        embedding_list.append(pred)
+        break
 
     end = time.time()
     seconds = end - start
     print('avg fps: {}'.format(str(len(samples) / seconds)))
 
-    return y_pred, y_test
+    return embedding_list
 
 
 class FaceExpressionEmbedder(nn.Module):
@@ -63,19 +68,18 @@ class FaceExpressionEmbedder(nn.Module):
 
 if __name__ == '__main__':
     embedder = FaceExpressionEmbedder().to(device)
-    summary(embedder, input_size=(3, 112, 112))
-
-    # model = embedder.to(device)
-    # model.eval()
+    # summary(embedder, input_size=(3, 112, 112))
+    embedder = embedder.to(device)
+    embedder.eval()
     #
     # num_classes = 7
     # class_names = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
     # # emotion = {0:'愤怒', 1:'厌恶', 2:'恐惧', 3:'高兴', 4:'悲伤', 5:'惊讶', 6: '无表情'}
     #
-    # with open(data_file, 'rb') as file:
-    #     data = pickle.load(file)
-    #
-    # samples = data['test']
-    # transformer = data_transforms['valid']
-    #
-    # y_pred, y_test = predict(model, samples)
+    with open(data_file, 'rb') as file:
+        data = pickle.load(file)
+
+    samples = data['test']
+    transformer = data_transforms['valid']
+
+    embedding_list = predict(embedder, samples)
