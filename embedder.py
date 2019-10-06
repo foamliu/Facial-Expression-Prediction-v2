@@ -52,7 +52,7 @@ class FaceExpressionEmbedder(nn.Module):
         model = FaceExpressionModel()
         model.load_state_dict(torch.load(checkpoint))
         # Remove linear and pool layers (since we're not doing classification)
-        modules = list(model.children())[:-1]
+        modules = list(model.children())[:-2]
         self.model = nn.Sequential(*modules)
 
     def forward(self, images):
