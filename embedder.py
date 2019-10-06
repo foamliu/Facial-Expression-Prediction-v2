@@ -20,7 +20,7 @@ from models import FaceExpressionModel
 def predict(model, samples):
     num_samples = len(samples)
     print('num_samples: ' + str(num_samples))
-    embedding_list = []
+    embeddings = np.zeros((num_samples, 2048), dtype=np.float)
 
     start = time.time()
 
@@ -36,19 +36,18 @@ def predict(model, samples):
         img = img.to(device)
 
         with torch.no_grad():
-            pred = model(img)[0]
+            embedded = model(img)[0]
+            embedded = embedded.cpu().numpy()
 
-        print(pred.size())
-        embedded = pred[0].cpu().numpy()
         print(embedded.shape)
-        embedding_list.append(pred)
+        embeddings[i] = embedded
         break
 
     end = time.time()
     seconds = end - start
     print('avg fps: {}'.format(str(len(samples) / seconds)))
 
-    return embedding_list
+    return embeddings
 
 
 class FaceExpressionEmbedder(nn.Module):
