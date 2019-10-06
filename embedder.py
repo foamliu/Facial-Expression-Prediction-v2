@@ -110,7 +110,7 @@ def get_annotations(two_d, labels):
 
     print('xs: ' + str(xs))
     print('ys: ' + str(ys))
-    print('ids: ' + str(labels))
+    print('labels: ' + str(labels))
 
     return xs, ys, labels
 
@@ -134,10 +134,10 @@ if __name__ == '__main__':
 
     transformer = data_transforms['valid']
 
-    embeddings, labels = predict(embedder, samples)
+    embeddings, ids = predict(embedder, samples)
     # print(labels)
 
-    labels = [class_names[idx] for idx in labels]
+    labels = [class_names[idx] for idx in ids]
     # print(labels)
 
     print('t-SNE: fitting transform...')
@@ -149,7 +149,7 @@ if __name__ == '__main__':
     xs, ys, labels = get_annotations(two_d_embeddings, labels)
 
     pylab.figure(figsize=(15, 15))
-    pylab.scatter(two_d_embeddings[:, 0], two_d_embeddings[:, 1], c=labels, cmap=cmap, norm=norm, alpha=0.8,
+    pylab.scatter(two_d_embeddings[:, 0], two_d_embeddings[:, 1], c=ids, cmap=cmap, norm=norm, alpha=0.8,
                   edgecolors='none', s=10)
     for i, label in enumerate(labels):
         pylab.annotate(label, xy=(xs[i], ys[i]), xytext=(0, 0), textcoords='offset points',
