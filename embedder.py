@@ -61,9 +61,8 @@ class FaceExpressionEmbedder(nn.Module):
 
 
 if __name__ == '__main__':
-    embedder = FaceExpressionEmbedder()
-    model = FaceExpressionModel().to(device)
-    summary(model, input_size=(3, 112, 112))
+    embedder = FaceExpressionEmbedder().to(device)
+    summary(embedder, input_size=(3, 112, 112))
 
     # model = embedder.to(device)
     # model.eval()
