@@ -19,6 +19,7 @@ from models import FaceExpressionModel
 
 def predict(model, samples):
     num_samples = len(samples)
+    print('num_samples: ' + str(num_samples))
     embedding_list = []
 
     start = time.time()
