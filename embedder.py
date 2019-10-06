@@ -135,10 +135,10 @@ if __name__ == '__main__':
     transformer = data_transforms['valid']
 
     embeddings, labels = predict(embedder, samples)
-    print(labels)
+    # print(labels)
 
     labels = [class_names[idx] for idx in labels]
-    print(labels)
+    # print(labels)
 
     print('t-SNE: fitting transform...')
     tsne = TSNE(perplexity=30, n_components=2, init='pca', n_iter=5000)
