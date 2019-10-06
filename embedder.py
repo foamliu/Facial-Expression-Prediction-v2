@@ -57,7 +57,8 @@ class FaceExpressionEmbedder(nn.Module):
 
     def forward(self, images):
         x = self.model(images)  # [N, 2048, 1, 1]
-        return x
+        out = x.view(-1, 2048)  # [N, 2048]
+        return out
 
 
 if __name__ == '__main__':
