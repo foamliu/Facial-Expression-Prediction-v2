@@ -46,7 +46,6 @@ def predict(model, samples):
         embeddings[i] = embedded
 
         labels.append(sample['label'])
-        break
 
     end = time.time()
     seconds = end - start
