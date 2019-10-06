@@ -42,14 +42,14 @@ def predict(model, samples):
             embedded = model(img)[0]
             embedded = embedded.cpu().numpy()
 
-        print(embedded.shape)
+        # print(embedded.shape)
         embeddings[i] = embedded
 
         labels.append(sample['label'])
 
     end = time.time()
-    seconds = end - start
-    print('avg fps: {}'.format(str(len(samples) / seconds)))
+    elapsed = end - start
+    print('seconds per image: {:.4f}'.format(elapsed / num_samples))
 
     return embeddings, labels
 
@@ -108,9 +108,9 @@ def get_annotations(two_d, labels):
         ys.append(np.median(coods[label]['y']))
         labels.append(label)
 
-    # print('xs: ' + str(xs))
-    # print('ys: ' + str(ys))
-    # print('ids: ' + str(ids))
+    print('xs: ' + str(xs))
+    print('ys: ' + str(ys))
+    print('ids: ' + str(ids))
 
     return xs, ys, labels
 
