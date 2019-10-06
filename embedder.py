@@ -38,6 +38,7 @@ def predict(model, samples):
         with torch.no_grad():
             pred = model(img)[0]
 
+        print(pred.size())
         embedded = pred[0].cpu().numpy()
         print(embedded.shape)
         embedding_list.append(pred)
