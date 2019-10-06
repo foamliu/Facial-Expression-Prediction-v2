@@ -110,7 +110,7 @@ def get_annotations(two_d, labels):
 
     print('xs: ' + str(xs))
     print('ys: ' + str(ys))
-    print('ids: ' + str(ids))
+    print('ids: ' + str(labels))
 
     return xs, ys, labels
 
