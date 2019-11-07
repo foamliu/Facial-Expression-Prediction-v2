@@ -101,6 +101,7 @@ class FaceExpressionDataset(Dataset):
             self.samples = random_pick(data[split])
         else:
             self.samples = data[split]
+
         self.transformer = data_transforms[split]
 
     def __getitem__(self, i):
