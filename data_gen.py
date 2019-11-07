@@ -94,10 +94,10 @@ class FaceExpressionDataset(Dataset):
         with open(data_file, 'rb') as file:
             data = pickle.load(file)
 
-        if split == 'train':
-            self.samples = random_pick(data[split])
-        else:
-            self.samples = data[split]
+        # if split == 'train':
+        #     self.samples = random_pick(data[split])
+        # else:
+        self.samples = data[split]
 
         self.transformer = data_transforms[split]
 
