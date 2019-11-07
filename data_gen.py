@@ -88,7 +88,7 @@ def random_pick(samples):
         for sample in samples:
             if sample['label'] == emotion:
                 sample_list.append(sample)
-        result += random.sample(sample_list, 400)
+        result += random.sample(sample_list, 436)
     return result
 
 
@@ -97,7 +97,10 @@ class FaceExpressionDataset(Dataset):
         with open(data_file, 'rb') as file:
             data = pickle.load(file)
 
-        self.samples = random_pick(data[split])
+        if split == 'train':
+            self.samples = random_pick(data[split])
+        else:
+            self.samples = data[split]
         self.transformer = data_transforms[split]
 
     def __getitem__(self, i):
