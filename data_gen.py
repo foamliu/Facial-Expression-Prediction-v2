@@ -80,12 +80,23 @@ def get_all_face_attributes(full_path):
     return bounding_boxes, landmarks
 
 
+def random_pick(samples):
+    result = []
+    for emotion in range(7):
+        sample_list = []
+        for sample in samples:
+            if sample['label'] == emotion:
+                sample_list.append(sample)
+        result += random.sample(sample_list, 436)
+    return result
+
+
 class FaceExpressionDataset(Dataset):
     def __init__(self, split):
         with open(data_file, 'rb') as file:
             data = pickle.load(file)
 
-        self.samples = data[split]
+        self.samples = random_pick(data[split])
         self.transformer = data_transforms[split]
 
     def __getitem__(self, i):
