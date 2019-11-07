@@ -88,7 +88,7 @@ def random_pick(samples):
         for sample in samples:
             if sample['label'] == emotion:
                 sample_list.append(sample)
-        result += random.sample(sample_list, 436)
+        result += random.sample(sample_list, 400)
     return result
 
 
