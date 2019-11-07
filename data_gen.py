@@ -84,10 +84,7 @@ def get_all_face_attributes(full_path):
 def random_pick(samples):
     result = []
     for emotion in range(7):
-        sample_list = []
-        for sample in samples:
-            if sample['label'] == emotion:
-                sample_list.append(sample)
+        sample_list = [s for s in samples if s['label'] == emotion]
         result += random.sample(sample_list, 436)
     return result
 
